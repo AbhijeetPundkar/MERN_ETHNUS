@@ -2,27 +2,33 @@
 <html>
 <head>
   <title>Registration Form</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
   <style>
-    body {
+    body 
+    {
       font-family: Arial, sans-serif;
     }
 
-    div {
+    div 
+    {
       width: 80%;
       margin: 0 auto;
     }
 
-    table {
+    table 
+    {
       border-collapse: collapse;
       width: 100%;
     }
 
-    th, td {
+    th, td 
+    {
       border: 1px solid black;
       padding: 5px;
     }
 
-    th {
+    th 
+    {
       text-align: center;
       width: 20%;
     }
@@ -32,29 +38,33 @@
     input[type="password"],
     input[type="number"],
     input[type="tel"],
-    textarea {
+    textarea 
+    {
       width: 100%;
       padding: 5px;
       box-sizing: border-box;
     }
 
-    h1 {
+    h1 
+    {
       color: blue;
       text-align: center;
     }
 
-    center {
+    center 
+    {
       display: block;
       text-align: center;
     }
 
-    input[type="checkbox"] {
+    input[type="checkbox"] 
+    {
       margin-right: 5px;
     }
   </style>
 </head>
 <body>
-  <div>
+    <div>
     <h1>Registration Form</h1>
     <table>
       <tr>
@@ -78,14 +88,15 @@
         <td><input type="password" name="re_enter_password"></td>
       </tr>
       <tr>
-        <th>Gender</th>
+        <th>Gender:</th>
         <td>
           <input type="radio" name="gender" value="male"> Male
+          <hr />
           <input type="radio" name="gender" value="female"> Female
         </td>
       </tr>
       <tr>
-        <th>Age</th>
+        <th>Age:</th>
         <td><input type="number" name="age"></td>
       </tr>
       <tr>
@@ -102,7 +113,36 @@
       </tr>
       <tr>
         <th>Country</th>
-        <td><input type="text" name="country"></td>
+        <td>
+          <select id="country" name="country" style="width: 300px;"></select>
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+          <script>
+              $(document).ready(function() {
+                  $('#country').select2({
+                      placeholder: 'Choose your country',
+                      allowClear: true,
+                      ajax: {
+                          url: 'https://restcountries.com/v3.1/all',
+                          dataType: 'json',
+                          delay: 250,
+                          processResults: function(data) {
+                              data.sort((a, b) => a.name.common.localeCompare(b.name.common)); // Sort alphabetically
+                              return {
+                                  results: data.map(function(country) {
+                                      return {
+                                          id: country.cca2,
+                                          text: country.name.common
+                                      };
+                                  })
+                              };
+                          },
+                        cache: true
+                      }
+                  });
+              });
+          </script>
+        </td>
       </tr>
       <tr>
         <th>Languages known</th>
@@ -117,7 +157,7 @@
         <td colspan="2"><input type="checkbox" name="declaration"> Hereby I declare all the given details are true</td>
       </tr>
       <tr>
-        <td colspan="2" style="text-align: right;">Log in to <a href="">Ethnus</a> website</td>
+        <td colspan="2" style="text-align: right;">Log in to <a href="https://ethnus.com/" target="_blank">Ethnus</a> website</td>
       </tr>
     </table>
     <p><center><input type="submit" value="Register"></center></p>
